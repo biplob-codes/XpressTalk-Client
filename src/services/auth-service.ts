@@ -1,6 +1,6 @@
 import type { UserSignInType, UserSignUpType } from "@/schema/auth-schema";
 import { apiClient } from "./apiClient";
-interface Response {
+export interface Response {
   success: true;
   message: string;
   errors?: any;

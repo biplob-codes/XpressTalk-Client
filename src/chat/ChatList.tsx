@@ -1,4 +1,5 @@
-import { chats } from "@/chat/mock-data";
+import { getChatList } from "@/services/chat-service";
+import { useQuery } from "@tanstack/react-query";
 
 const ChatList = () => {
   const getAvatarColor = (name: string) => {
@@ -15,15 +16,18 @@ const ChatList = () => {
     const index = name.charCodeAt(0) % colors.length;
     return colors[index];
   };
+  const { data } = useQuery({
+    queryKey: ["chat-list"],
+    queryFn: getChatList,
+  });
+
   return (
     <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
       <div className="p-2">
-        {chats.map((chat) => (
+        {data?.data?.map((chat) => (
           <div
             key={chat.id}
-            className={`flex items-center p-3 rounded-lg cursor-pointer transition-all hover:bg-gray-50 ${
-              chat.isActive ? "bg-blue-50 border-l-4 border-blue-500" : ""
-            }`}
+            className={`flex items-center p-3 rounded-lg cursor-pointer transition-all hover:bg-gray-50 `}
           >
             {/* Avatar */}
             <div className="relative flex-shrink-0">
@@ -32,11 +36,11 @@ const ChatList = () => {
                   chat.name
                 )} flex items-center justify-center text-white font-medium text-sm`}
               >
-                {chat.avatar}
+                {/* {chat.avatar} */}
               </div>
-              {chat.isOnline && (
+              {/* {chat.isOnline && (
                 <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-              )}
+              )} */}
             </div>
 
             {/* Chat Info */}
@@ -46,17 +50,17 @@ const ChatList = () => {
                   {chat.name}
                 </h3>
                 <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
-                  {chat.time}
+                  {/* {chat.time} */} 10m
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-600 truncate pr-2">
-                  {chat.message}
+                  {/* {chat.message} */} To all the subjects of Ymir
                 </p>
-                {chat.unreadCount > 0 && (
+                {9 > 0 && (
                   <span className="bg-green-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center flex-shrink-0">
-                    {chat.unreadCount}
+                    {/* {chat.unreadCount} */} 11
                   </span>
                 )}
               </div>
