@@ -1,5 +1,6 @@
 import { MessageCircle, Users, Shield, Zap } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   return (
@@ -52,14 +53,18 @@ export default function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button className="w-full bg-black text-white sm:w-auto px-8 py-3 text-base">
-              Sign Up Free
+            <Button
+              className="w-full bg-black text-white sm:w-auto px-8 py-3 text-base"
+              asChild
+            >
+              <Link to="/auth/signup">Sign Up Free</Link>
             </Button>
             <Button
               variant="outline"
               className="w-full sm:w-auto px-8 py-3 text-base"
+              asChild
             >
-              Login
+              <Link to="/auth/signin">Login</Link>
             </Button>
           </div>
         </div>
@@ -128,8 +133,11 @@ export default function LandingPage() {
               communication needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button className="w-full bg-black text-white sm:w-auto px-8 py-3 text-base">
-                Create Account
+              <Button
+                className="w-full bg-black text-white sm:w-auto px-8 py-3 text-base"
+                asChild
+              >
+                <Link to="/auth/signup">Create Account</Link>
               </Button>
               <Button
                 variant="outline"

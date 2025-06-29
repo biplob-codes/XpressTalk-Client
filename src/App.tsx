@@ -1,9 +1,7 @@
-import LandingPage from "./components/LandingPage";
-
 const App = () => {
   return (
     <div>
-      <LandingPage />
+      <h1>Hello World</h1>
     </div>
   );
 };
