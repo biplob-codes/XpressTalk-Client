@@ -3,7 +3,7 @@ import LandingPage from "@/components/LandingPage";
 import Signup from "@/auth/Signup";
 import Signin from "@/auth/Signin";
 import AuthLayout from "@/auth/AuthLayout";
-import ChatPage from "@/components/ChatPage";
+import ChatPage from "@/chat/ChatPage";
 import ProtectedRoutes from "@/components/ProtectedRoutes";
 import ContactPage from "./components/ContactPage";
 import ProfilePage from "./components/ProfilePage";
