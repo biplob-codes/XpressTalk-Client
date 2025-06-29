@@ -4,6 +4,7 @@ import Signup from "@/auth/Signup";
 import Signin from "@/auth/Signin";
 import AuthLayout from "@/auth/AuthLayout";
 import ChatPage from "@/components/ChatPage";
+import ProtectedRoutes from "@/components/ProtectedRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -11,8 +12,14 @@ export const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: "/chats",
-    element: <ChatPage />,
+    path: "/",
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        path: "chats",
+        element: <ChatPage />,
+      },
+    ],
   },
   {
     path: "/auth/",
