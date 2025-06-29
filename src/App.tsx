@@ -1,5 +1,11 @@
+import LandingPage from "./components/LandingPage";
+
 const App = () => {
-  return <div>Hello World</div>;
+  return (
+    <div>
+      <LandingPage />
+    </div>
+  );
 };
 
 export default App;
