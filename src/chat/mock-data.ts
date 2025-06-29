@@ -81,3 +81,26 @@ export const chats = [
     isActive: false,
   },
 ];
+export const messages = [
+  {
+    id: 1,
+    text: "Sorry :( send you as soon as possible.",
+    time: "05:23 PM",
+    sent: true,
+    delivered: true,
+  },
+  {
+    id: 2,
+    text: "I know how important this file is to you. You can trust me :) I know how important this file is to you. You can trust me :) know how important this file is to you. You can trust me :)",
+    time: "05:23 PM",
+    sent: false,
+    delivered: false,
+  },
+  {
+    id: 3,
+    text: "I know how important this file is to you. You can trust me :) me :)",
+    time: "05:23 PM",
+    sent: true,
+    delivered: true,
+  },
+];
