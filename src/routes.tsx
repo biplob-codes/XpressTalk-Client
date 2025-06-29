@@ -5,10 +5,14 @@ import Signin from "@/auth/Signin";
 import AuthLayout from "@/auth/AuthLayout";
 import ChatPage from "@/components/ChatPage";
 import ProtectedRoutes from "@/components/ProtectedRoutes";
+import ContactPage from "./components/ContactPage";
+import ProfilePage from "./components/ProfilePage";
+import SettingsPage from "./components/SettingsPage";
+import PageLayout from "./components/PageLayout";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/home",
     element: <LandingPage />,
   },
   {
@@ -16,8 +20,26 @@ export const router = createBrowserRouter([
     element: <ProtectedRoutes />,
     children: [
       {
-        path: "chats",
-        element: <ChatPage />,
+        path: "",
+        element: <PageLayout />,
+        children: [
+          {
+            path: "chats",
+            element: <ChatPage />,
+          },
+          {
+            path: "contacts",
+            element: <ContactPage />,
+          },
+          {
+            path: "profile",
+            element: <ProfilePage />,
+          },
+          {
+            path: "settings",
+            element: <SettingsPage />,
+          },
+        ],
       },
     ],
   },

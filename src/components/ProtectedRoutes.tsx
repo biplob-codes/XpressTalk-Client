@@ -9,7 +9,7 @@ const ProtectedRoutes = () => {
   });
 
   if (isLoading) return <div>Loading.....................</div>;
-  return data?.success ? <Outlet /> : <Navigate to={"/"} replace />;
+  return data?.success ? <Outlet /> : <Navigate to={"/home"} replace />;
 };
 
 export default ProtectedRoutes;
