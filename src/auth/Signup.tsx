@@ -1,8 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { userSignupSchema, type UserSignUpType } from "@/schema/auth-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm<UserSignUpType>({ resolver: zodResolver(userSignupSchema) });
+  const onSignup: SubmitHandler<UserSignUpType> = (data) => {
+    console.log(data);
+  };
   return (
     <div className="flex flex-col justify-center h-screen  w-3/4 mx-auto">
       <div className="mx-auto mb-5 text-center">
@@ -20,11 +31,34 @@ const Signup = () => {
           </Link>
         </div>
       </div>
-      <form action="">
-        <Input placeholder="Username" name="username" className="mb-3" />
-        <Input placeholder="Email" name="email" className="mb-3" />
-        <Input placeholder="Password" name="password" className="mb-3" />
-        <Button type="submit" className="w-full  ">
+      <form onSubmit={handleSubmit(onSignup)}>
+        <Input
+          placeholder="Username"
+          {...register("username")}
+          className="mt-3"
+        />
+        {errors.username?.message && (
+          <p className="text-red-500  text-sm ml-2 mt-1">
+            {errors.username?.message}
+          </p>
+        )}
+        <Input placeholder="Email" {...register("email")} className="mt-3" />
+        {errors.email?.message && (
+          <p className="text-red-500  text-sm ml-2 mt-1">
+            {errors.email?.message}
+          </p>
+        )}
+        <Input
+          placeholder="Password"
+          {...register("password")}
+          className="mt-3"
+        />
+        {errors.password?.message && (
+          <p className="text-red-500  text-sm ml-2 mt-1">
+            {errors.password?.message}
+          </p>
+        )}
+        <Button type="submit" className="w-full mt-5 ">
           Create Account
         </Button>
       </form>
