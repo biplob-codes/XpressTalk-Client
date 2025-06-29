@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { userSigninSchema, type UserSignInType } from "@/schema/auth-schema";
+import { signinUser } from "@/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { Loader2Icon } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const {
@@ -11,8 +15,22 @@ const Signin = () => {
     register,
     handleSubmit,
   } = useForm<UserSignInType>({ resolver: zodResolver(userSigninSchema) });
-  const onSignup: SubmitHandler<UserSignInType> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+  const { mutate, isPending } = useMutation({
+    mutationFn: signinUser,
+    onSuccess: (res) => {
+      localStorage.setItem("xpressTalkAccessToken", res.data?.accessToken!);
+      navigate("/chats");
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        if (err.code === "ERR_NETWORK") alert("Dattebayo");
+        else if (err.response?.data) alert(err.response.data.message);
+      }
+    },
+  });
+  const onSignin: SubmitHandler<UserSignInType> = async (data) => {
+    await mutate(data);
   };
   return (
     <div className="flex flex-col justify-center h-screen  w-3/4 mx-auto">
@@ -31,7 +49,7 @@ const Signin = () => {
           </Link>
         </div>
       </div>
-      <form onSubmit={handleSubmit(onSignup)}>
+      <form onSubmit={handleSubmit(onSignin)}>
         <Input placeholder="Email" {...register("email")} className="mt-3" />
         {errors.email?.message && (
           <p className="text-red-500  text-sm ml-2 mt-1">
@@ -48,8 +66,9 @@ const Signin = () => {
             {errors.password?.message}
           </p>
         )}
-        <Button type="submit" className="w-full mt-5 ">
-          Create Account
+        <Button type="submit" disabled={isPending} className="w-full mt-5 ">
+          {isPending && <Loader2Icon className="animate-spin" />}
+          Sign in
         </Button>
       </form>
     </div>

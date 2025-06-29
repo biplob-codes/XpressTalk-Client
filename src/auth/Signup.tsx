@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { userSignupSchema, type UserSignUpType } from "@/schema/auth-schema";
+import { signupUser } from "@/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Loader2Icon } from "lucide-react";
+import { AxiosError } from "axios";
 
 const Signup = () => {
   const {
@@ -11,9 +15,24 @@ const Signup = () => {
     register,
     handleSubmit,
   } = useForm<UserSignUpType>({ resolver: zodResolver(userSignupSchema) });
-  const onSignup: SubmitHandler<UserSignUpType> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+  const { mutate, isPending } = useMutation({
+    mutationFn: signupUser,
+    onSuccess: (res) => {
+      localStorage.setItem("xpressTalkAccessToken", res.data?.accessToken!);
+      navigate("/chats");
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        if (err.code === "ERR_NETWORK") alert("Dattebayo");
+        else if (err.response?.data) alert(err.response.data.message);
+      }
+    },
+  });
+  const onSignup: SubmitHandler<UserSignUpType> = async (data) => {
+    await mutate(data);
   };
+
   return (
     <div className="flex flex-col justify-center h-screen  w-3/4 mx-auto">
       <div className="mx-auto mb-5 text-center">
@@ -58,7 +77,8 @@ const Signup = () => {
             {errors.password?.message}
           </p>
         )}
-        <Button type="submit" className="w-full mt-5 ">
+        <Button type="submit" disabled={isPending} className="w-full mt-5 ">
+          {isPending && <Loader2Icon className="animate-spin" />}
           Create Account
         </Button>
       </form>
