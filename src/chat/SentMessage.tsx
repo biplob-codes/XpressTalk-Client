@@ -1,16 +1,10 @@
 import { MoreHorizontal } from "lucide-react";
+import { formatToTime } from "./utils";
 interface Props {
   content: string;
   createdAt: string;
 }
-function formatToTime(dateTimeString: string) {
-  const date = new Date(dateTimeString);
-  return date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-}
+
 const SentMessage = ({ content, createdAt }: Props) => {
   return (
     <div className="flex justify-end group">

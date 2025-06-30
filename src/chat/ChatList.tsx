@@ -1,23 +1,10 @@
 import { getChatList } from "@/services/chat-service";
 import { useQuery } from "@tanstack/react-query";
+import { getAvatarColor } from "./utils";
 interface Props {
   setChatId: (id: string) => void;
 }
 const ChatList = ({ setChatId }: Props) => {
-  const getAvatarColor = (name: string) => {
-    const colors = [
-      "bg-blue-500",
-      "bg-green-500",
-      "bg-purple-500",
-      "bg-red-500",
-      "bg-yellow-500",
-      "bg-indigo-500",
-      "bg-pink-500",
-      "bg-teal-500",
-    ];
-    const index = name.charCodeAt(0) % colors.length;
-    return colors[index];
-  };
   const { data } = useQuery({
     queryKey: ["chat-list"],
     queryFn: getChatList,
