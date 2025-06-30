@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { userSigninSchema, type UserSignInType } from "@/schema/auth-schema";
 import { signinUser } from "@/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Loader2Icon } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -16,10 +16,12 @@ const Signin = () => {
     handleSubmit,
   } = useForm<UserSignInType>({ resolver: zodResolver(userSigninSchema) });
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: signinUser,
     onSuccess: (res) => {
       localStorage.setItem("xpressTalkAccessToken", res.data?.accessToken!);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/chats");
     },
     onError: (err) => {
