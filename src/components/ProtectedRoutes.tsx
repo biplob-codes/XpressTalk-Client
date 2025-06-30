@@ -5,11 +5,14 @@ import { Navigate, Outlet } from "react-router-dom";
 const ProtectedRoutes = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["user"],
-    queryFn: getUser,
+    queryFn: async () => {
+      const result = await getUser();
+      return result.data?.user;
+    },
   });
 
   if (isLoading) return <div>Loading.....................</div>;
-  return data?.success ? <Outlet /> : <Navigate to={"/home"} replace />;
+  return data?.id ? <Outlet /> : <Navigate to={"/home"} replace />;
 };
 
 export default ProtectedRoutes;

@@ -1,7 +1,9 @@
 import { getChatList } from "@/services/chat-service";
 import { useQuery } from "@tanstack/react-query";
-
-const ChatList = () => {
+interface Props {
+  setChatId: (id: string) => void;
+}
+const ChatList = ({ setChatId }: Props) => {
   const getAvatarColor = (name: string) => {
     const colors = [
       "bg-blue-500",
@@ -28,6 +30,7 @@ const ChatList = () => {
           <div
             key={chat.id}
             className={`flex items-center p-3 rounded-lg cursor-pointer transition-all hover:bg-gray-50 `}
+            onClick={() => setChatId(chat.id)}
           >
             {/* Avatar */}
             <div className="relative flex-shrink-0">

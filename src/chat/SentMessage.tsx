@@ -1,6 +1,17 @@
 import { MoreHorizontal } from "lucide-react";
-
-const SentMessage = () => {
+interface Props {
+  content: string;
+  createdAt: string;
+}
+function formatToTime(dateTimeString: string) {
+  const date = new Date(dateTimeString);
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+const SentMessage = ({ content, createdAt }: Props) => {
   return (
     <div className="flex justify-end group">
       <div className="flex items-start space-x-2 max-w-xs">
@@ -8,13 +19,11 @@ const SentMessage = () => {
           <MoreHorizontal className="w-4 h-4 text-gray-400" />
         </button>
         <div className="bg-blue-500 text-white px-4 py-2 rounded-2xl rounded-br-md relative">
-          <p className="text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
-            quisquam nesciunt non ducimus assumenda repudiandae officia expedita
-            quae impedit consequatur!
-          </p>
+          <p className="text-sm">{content}</p>
           <div className="flex items-center justify-end mt-1 space-x-1">
-            <span className="text-xs text-blue-100">02:33</span>
+            <span className="text-xs text-blue-100">
+              {formatToTime(createdAt)}
+            </span>
             <div className="flex">
               <svg
                 className="w-4 h-4 text-blue-200"
