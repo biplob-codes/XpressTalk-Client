@@ -4,21 +4,36 @@ import ChatInput from "./ChatInput";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
 import type { User } from "@/services/auth-service";
-import { getChatMessages } from "@/services/chat-service";
+import { getChatMessages, type Message } from "@/services/chat-service";
+import { useEffect, useRef, useState } from "react";
 interface Props {
   chatId: string;
 }
 const ChatPanel = ({ chatId }: Props) => {
-  console.log(chatId);
   const user = useQueryClient().getQueryData<User>(["user"]);
-  const { data } = useQuery({
+  useQuery({
     queryKey: [`chat:${chatId}`],
     queryFn: async () => {
       const result = await getChatMessages(chatId);
+      setMessages(result.data);
       return result.data;
     },
   });
-
+  const [messages, setMessages] = useState<Message[]>([]);
+  const handleNewMessage = (message: string) => {
+    const newMessage = {
+      id: `${messages?.length! + 1}`,
+      content: message,
+      chatId,
+      senderId: user?.id!,
+      createdAt: new Date().toISOString(),
+    };
+    setMessages([...messages, newMessage]);
+  };
+  const messageEndRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
   return (
     <div className="flex-1 flex flex-col   mx-auto bg-white shadow-lg">
       <ChatHeader />
@@ -28,7 +43,7 @@ const ChatPanel = ({ chatId }: Props) => {
         style={{ scrollbarWidth: "thin" }}
       >
         <div className="space-y-3">
-          {data?.map((msg) =>
+          {messages?.map((msg) =>
             msg.senderId === user?.id ? (
               <SentMessage content={msg.content} createdAt={msg.createdAt} />
             ) : (
@@ -38,9 +53,10 @@ const ChatPanel = ({ chatId }: Props) => {
               />
             )
           )}
+          <div ref={messageEndRef} />
         </div>
       </div>
-      <ChatInput />
+      <ChatInput onSend={handleNewMessage} />
     </div>
   );
 };
