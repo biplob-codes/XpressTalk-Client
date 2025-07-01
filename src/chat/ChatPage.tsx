@@ -3,14 +3,21 @@ import ChatList from "./ChatList";
 import ChatListHeading from "./ChatListHeading";
 import ChatPanel from "./ChatPanel";
 import InitialChatPanel from "./InitialChatPanel";
+import { useActiveChatStore } from "@/store";
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState<string>();
+  const setActiveChat = useActiveChatStore((s) => s.setActiveChat);
   return (
     <div className="flex h-screen bg-gray-50 p-4 gap-4">
       <div className="w-96 bg-white rounded shadow-sm flex flex-col">
         <ChatListHeading />
-        <ChatList setChatId={(id) => setSelectedChat(id)} />
+        <ChatList
+          setChatId={(id) => {
+            setActiveChat(id);
+            setSelectedChat(id);
+          }}
+        />
       </div>
       {selectedChat ? (
         <ChatPanel chatId={selectedChat} />

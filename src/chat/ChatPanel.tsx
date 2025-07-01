@@ -1,25 +1,19 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useChatMessages } from "@/hooks/useChatMessages";
+import type { User } from "@/services/auth-service";
+import { useActiveChatStore } from "@/store";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
-import type { User } from "@/services/auth-service";
-import { getChatMessages, type Message } from "@/services/chat-service";
-import { useEffect, useRef, useState } from "react";
 interface Props {
   chatId: string;
 }
 const ChatPanel = ({ chatId }: Props) => {
   const user = useQueryClient().getQueryData<User>(["user"]);
-  useQuery({
-    queryKey: [`chat:${chatId}`],
-    queryFn: async () => {
-      const result = await getChatMessages(chatId);
-      setMessages(result.data);
-      return result.data;
-    },
-  });
-  const [messages, setMessages] = useState<Message[]>([]);
+  const { setMessages } = useActiveChatStore();
+  const messages = useChatMessages();
   const handleNewMessage = (message: string) => {
     const newMessage = {
       id: `${messages?.length! + 1}`,
