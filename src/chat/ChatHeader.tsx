@@ -1,6 +1,8 @@
+import { useActiveChatStore } from "@/store";
 import { MoreHorizontal, Phone } from "lucide-react";
 
 const ChatHeader = () => {
+  const activeChat = useActiveChatStore((s) => s.activeChat);
   return (
     <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
       <div className="flex items-center space-x-3">
@@ -12,7 +14,7 @@ const ChatHeader = () => {
         </div>
         <div>
           <h3 className="font-semibold text-gray-900 text-base">
-            Nickola Peever
+            {activeChat.name}
           </h3>
           <p className="text-sm text-green-500 font-medium">Online</p>
         </div>

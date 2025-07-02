@@ -13,9 +13,9 @@ const ChatPage = () => {
       <div className="w-96 bg-white rounded shadow-sm flex flex-col">
         <ChatListHeading />
         <ChatList
-          setChatId={(id) => {
-            setActiveChat(id);
-            setSelectedChat(id);
+          setActiveChat={(chat) => {
+            setActiveChat(chat);
+            setSelectedChat(chat.id);
           }}
         />
       </div>

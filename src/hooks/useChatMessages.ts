@@ -5,9 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 export const useChatMessages = () => {
   const { activeChat, setMessages, messages } = useActiveChatStore();
   useQuery({
-    queryKey: [`chat:${activeChat}`],
+    queryKey: [`chat:${activeChat.id}`],
     queryFn: async () => {
-      const result = await getChatMessages(activeChat);
+      const result = await getChatMessages(activeChat.id);
       setMessages(result.data);
       return result.data;
     },

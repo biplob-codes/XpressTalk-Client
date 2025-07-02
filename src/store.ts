@@ -11,16 +11,21 @@ export const useWsStore = create<WebSocketStore>((set) => ({
   removeSocket: () => set({ socket: null }),
 }));
 
+export interface ActiveChat {
+  name: string;
+  id: string;
+}
+
 interface ActiveChatStore {
-  activeChat: string;
+  activeChat: ActiveChat;
   messages: Message[];
   setMessages: (messages: Message[]) => void;
-  setActiveChat: (id: string) => void;
+  setActiveChat: (chat: ActiveChat) => void;
 }
 
 export const useActiveChatStore = create<ActiveChatStore>((set) => ({
-  activeChat: "",
+  activeChat: {} as ActiveChat,
   messages: [],
   setMessages: (messages) => set((state) => ({ ...state, messages })),
-  setActiveChat: (id: string) => set({ activeChat: id }),
+  setActiveChat: (chat: ActiveChat) => set({ activeChat: chat }),
 }));
