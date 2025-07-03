@@ -29,11 +29,11 @@ const ChatPanel = ({ chatId }: Props) => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   return (
-    <div className="flex-1 flex flex-col   mx-auto bg-white shadow-lg">
+    <div className="flex-1 flex flex-col mx-auto ">
       <ChatHeader />
 
       <div
-        className="flex-1 overflow-y-auto px-4 py-4 bg-gray-50"
+        className="flex-1 overflow-y-auto px-4 py-4  "
         style={{ scrollbarWidth: "thin" }}
       >
         <div className="space-y-3">

@@ -9,8 +9,8 @@ const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState<string>();
   const setActiveChat = useActiveChatStore((s) => s.setActiveChat);
   return (
-    <div className="flex h-screen bg-gray-50 p-4 gap-4">
-      <div className="w-96 bg-white rounded shadow-sm flex flex-col">
+    <div className="flex h-screen bg-slate-50 p-4 gap-4">
+      <div className="w-96 bg-white rounded shadow-xl flex flex-col">
         <ChatListHeading />
         <ChatList
           setActiveChat={(chat) => {

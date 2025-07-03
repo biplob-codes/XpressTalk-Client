@@ -4,7 +4,7 @@ import { MoreHorizontal, Phone } from "lucide-react";
 const ChatHeader = () => {
   const activeChat = useActiveChatStore((s) => s.activeChat);
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
+    <div className="flex items-center justify-between px-4 py-3  ">
       <div className="flex items-center space-x-3">
         <div className="relative">
           <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
