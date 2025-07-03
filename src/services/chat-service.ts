@@ -6,12 +6,21 @@ interface ChatListResponse extends Response {
     name: string;
   }[];
 }
+const MessageStatus = {
+  PENDING: "PENDING",
+  RECEIVED: "RECEIVED",
+  DELIVERED: "DELIVERED",
+  READ: "READ",
+} as const;
+
+export type MessageStatus = (typeof MessageStatus)[keyof typeof MessageStatus];
 export interface Message {
   id: string;
   content: string;
   senderId: string;
   chatId: string;
   createdAt: string;
+  status: MessageStatus;
 }
 interface ChatMessageResponse extends Response {
   data: Message[];

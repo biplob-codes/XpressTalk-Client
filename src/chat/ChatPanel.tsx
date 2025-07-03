@@ -7,6 +7,7 @@ import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
+import type { Message } from "@/services/chat-service";
 interface Props {
   chatId: string;
 }
@@ -20,8 +21,9 @@ const ChatPanel = ({ chatId }: Props) => {
       content: message,
       chatId,
       senderId: user?.id!,
+      status: "PENDING",
       createdAt: new Date().toISOString(),
-    };
+    } as Message;
     setMessages([...messages, newMessage]);
   };
   const messageEndRef = useRef<HTMLDivElement>(null);
@@ -39,12 +41,9 @@ const ChatPanel = ({ chatId }: Props) => {
         <div className="space-y-3">
           {messages?.map((msg) =>
             msg.senderId === user?.id ? (
-              <SentMessage content={msg.content} createdAt={msg.createdAt} />
+              <SentMessage message={msg} />
             ) : (
-              <ReceivedMessage
-                content={msg.content}
-                createdAt={msg.createdAt}
-              />
+              <ReceivedMessage message={msg} />
             )
           )}
           <div ref={messageEndRef} />
