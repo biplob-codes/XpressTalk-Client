@@ -38,11 +38,11 @@ const Signup = () => {
   return (
     <div className="flex flex-col justify-center h-screen  w-3/4 mx-auto">
       <div className="mx-auto mb-5 text-center">
-        <h2 className="text-gray-700 font-semibold text-3xl mb-2">
+        <h2 className="text-gray-700 font-semibold text-xl lg:text-3xl  mb-2">
           Create an Account
         </h2>
         <div className="flex items-center justify-center">
-          <p className="text-lg text-gray-500">Already have an account? </p>
+          <p className="lg:text-lg text-gray-500">Already have an account? </p>
 
           <Link
             className="mx-2 text-gray-500 hover:text-gray-800 underline transition-colors"
