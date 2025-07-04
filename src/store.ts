@@ -29,3 +29,17 @@ export const useActiveChatStore = create<ActiveChatStore>((set) => ({
   setMessages: (messages) => set((state) => ({ ...state, messages })),
   setActiveChat: (chat: ActiveChat) => set({ activeChat: chat }),
 }));
+
+interface UIStore {
+  isChatOpenOnMobile: boolean;
+  selectedChat: string;
+  setSelectedChat: (id: string) => void;
+  setIsChatPanelOpenOnMobile: (open: boolean) => void;
+}
+export const useUIStore = create<UIStore>((set) => ({
+  isChatOpenOnMobile: false,
+  selectedChat: "",
+  setSelectedChat: (id: string) => set((s) => ({ ...s, selectedChat: id })),
+  setIsChatPanelOpenOnMobile: (open: boolean) =>
+    set({ isChatOpenOnMobile: open }),
+}));

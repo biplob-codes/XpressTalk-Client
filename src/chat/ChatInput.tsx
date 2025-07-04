@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, Paperclip, Smile } from "lucide-react";
+import { useUIStore } from "@/store";
+import { Mic, Paperclip, Smile, SendHorizontal } from "lucide-react";
+
 import { useRef, useState } from "react";
 interface Props {
   onSend: (message: string) => void;
@@ -8,9 +10,10 @@ interface Props {
 const ChatInput = ({ onSend }: Props) => {
   const [message, setMessage] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isChatOpenOnMobile = useUIStore((s) => s.isChatOpenOnMobile);
 
   return (
-    <div className="px-4 py-3  ">
+    <div className="lg:px-4 lg:py-3 p-1 ">
       <div className="flex items-center space-x-3">
         <div className="flex-1 relative">
           <Textarea
@@ -27,7 +30,7 @@ const ChatInput = ({ onSend }: Props) => {
               target.style.height = Math.min(target.scrollHeight, 80) + "px";
             }}
           />
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-1 lg:space-x-2">
             <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
               <Smile className="w-4 h-4 text-gray-500" />
             </button>
@@ -51,7 +54,7 @@ const ChatInput = ({ onSend }: Props) => {
           disabled={message.length === 0}
           className="cursor-pointer rounded"
         >
-          Send
+          {isChatOpenOnMobile ? <SendHorizontal /> : "Send"}
         </Button>
       </div>
     </div>
