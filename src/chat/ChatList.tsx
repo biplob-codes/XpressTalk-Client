@@ -1,8 +1,9 @@
 import { getChatList } from "@/services/chat-service";
 import { useQuery } from "@tanstack/react-query";
-import { getAvatarColor } from "./utils";
+import { formatChatTime, getAvatarColor } from "./utils";
 import type { ActiveChat } from "@/store";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 interface Props {
   setActiveChat: (chat: ActiveChat) => void;
 }
@@ -22,11 +23,11 @@ const ChatList = ({ setActiveChat }: Props) => {
             onClick={() => setActiveChat(chat)}
           >
             <div className="relative flex-shrink-0">
-              <div
-                className={`w-12 h-12 rounded-full ${getAvatarColor(
-                  chat.name
-                )} flex items-center justify-center text-white font-medium text-sm`}
-              ></div>
+              <Avatar className="w-12 h-12">
+                <AvatarFallback className={`${getAvatarColor(chat.name)}`}>
+                  {chat.name.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
             </div>
 
             <div className="flex-1 ml-3 min-w-0">
@@ -35,17 +36,17 @@ const ChatList = ({ setActiveChat }: Props) => {
                   {chat.name}
                 </h3>
                 <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
-                  10m
+                  {formatChatTime(chat.updatedAt)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-600 truncate pr-2">
-                  To all the subjects of Ymir
+                  {chat.last_message}
                 </p>
-                {9 > 0 && (
+                {chat.unreadCount > 0 && (
                   <span className="bg-green-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center flex-shrink-0">
-                    11
+                    {chat.unreadCount}
                   </span>
                 )}
               </div>

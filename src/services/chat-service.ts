@@ -4,6 +4,9 @@ interface ChatListResponse extends Response {
   data: {
     id: string;
     name: string;
+    last_message: string;
+    updatedAt: string;
+    unreadCount: number;
   }[];
 }
 const MessageStatus = {
