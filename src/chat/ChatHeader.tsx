@@ -1,8 +1,8 @@
-import { useActiveChatStore, useUIStore } from "@/store";
+import { useChatStore, useUIStore } from "@/store";
 import { MoreHorizontal, Phone, ArrowLeft } from "lucide-react";
 
 const ChatHeader = () => {
-  const activeChat = useActiveChatStore((s) => s.activeChat);
+  const activeChat = useChatStore((s) => s.activeChat);
   const { isChatOpenOnMobile, setSelectedChat, setIsChatPanelOpenOnMobile } =
     useUIStore();
 

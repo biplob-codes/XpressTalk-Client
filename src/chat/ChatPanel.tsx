@@ -1,6 +1,6 @@
 import { useChatMessages } from "@/hooks/useChatMessages";
 import type { User } from "@/services/auth-service";
-import { useActiveChatStore } from "@/store";
+import { useChatStore } from "@/store";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import ChatHeader from "./ChatHeader";
@@ -17,7 +17,7 @@ interface Props {
 
 const ChatPanel = ({ chatId, onBack }: Props) => {
   const user = useQueryClient().getQueryData<User>(["user"]);
-  const { setMessages } = useActiveChatStore();
+  const { setMessages } = useChatStore();
   const messages = useChatMessages();
 
   const handleNewMessage = (message: string) => {

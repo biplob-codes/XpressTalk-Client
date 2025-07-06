@@ -1,22 +1,18 @@
-import { getChatList } from "@/services/chat-service";
-import { useQuery } from "@tanstack/react-query";
-import { formatChatTime, getAvatarColor } from "./utils";
-import type { ActiveChat } from "@/store";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useChatList } from "@/hooks/useChatList";
+import type { ActiveChat } from "@/store";
+import { formatChatTime, getAvatarColor } from "./utils";
 interface Props {
   setActiveChat: (chat: ActiveChat) => void;
 }
 const ChatList = ({ setActiveChat }: Props) => {
-  const { data: chats, isLoading } = useQuery({
-    queryKey: ["chat-list"],
-    queryFn: getChatList,
-  });
+  const { chatlist, isLoading } = useChatList();
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
       <div className="p-2">
-        {chats?.data?.map((chat) => (
+        {chatlist.map((chat) => (
           <div
             key={chat.id}
             className={`flex items-center p-3 rounded-lg cursor-pointer transition-all hover:bg-gray-50 `}

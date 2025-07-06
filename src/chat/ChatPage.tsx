@@ -1,4 +1,4 @@
-import { useActiveChatStore, useUIStore } from "@/store";
+import { useChatStore, useUIStore } from "@/store";
 import ChatList from "./ChatList";
 import ChatListHeading from "./ChatListHeading";
 import ChatPanel from "./ChatPanel";
@@ -7,7 +7,8 @@ import InitialChatPanel from "./InitialChatPanel";
 const ChatPage = () => {
   const { selectedChat, setSelectedChat, setIsChatPanelOpenOnMobile } =
     useUIStore();
-  const setActiveChat = useActiveChatStore((s) => s.setActiveChat);
+  const setActiveChat = useChatStore((s) => s.setActiveChat);
+
   return (
     <div className="flex h-screen bg-slate-50">
       {/* Desktop Layout */}
