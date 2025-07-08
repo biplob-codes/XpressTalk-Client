@@ -1,14 +1,14 @@
+import { useChatList } from "@/hooks/useChatList";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import type { User } from "@/services/auth-service";
-import { useChatStore } from "@/store";
+import type { Message } from "@/services/chat-service";
 import { useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
-import type { Message } from "@/services/chat-service";
-import { ArrowLeft } from "lucide-react";
 
 interface Props {
   chatId: string;
@@ -17,9 +17,8 @@ interface Props {
 
 const ChatPanel = ({ chatId, onBack }: Props) => {
   const user = useQueryClient().getQueryData<User>(["user"]);
-  const { setMessages } = useChatStore();
-  const messages = useChatMessages();
-
+  const { messages, addMessageToChat } = useChatMessages();
+  const { addMessageToChatList } = useChatList();
   const handleNewMessage = (message: string) => {
     const newMessage = {
       id: `${messages?.length! + 1}`,
@@ -29,7 +28,8 @@ const ChatPanel = ({ chatId, onBack }: Props) => {
       status: "PENDING",
       createdAt: new Date().toISOString(),
     } as Message;
-    setMessages([...messages, newMessage]);
+    addMessageToChatList(newMessage);
+    addMessageToChat(newMessage);
   };
 
   const messageEndRef = useRef<HTMLDivElement>(null);

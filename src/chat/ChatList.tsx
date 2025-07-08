@@ -12,7 +12,7 @@ const ChatList = ({ setActiveChat }: Props) => {
   return (
     <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
       <div className="p-2">
-        {chatlist.map((chat) => (
+        {chatlist?.map((chat) => (
           <div
             key={chat.id}
             className={`flex items-center p-3 rounded-lg cursor-pointer transition-all hover:bg-gray-50 `}

@@ -1,17 +1,21 @@
-import { getChatMessages } from "@/services/chat-service";
+import { getChatMessages, type Message } from "@/services/chat-service";
 import { useChatStore } from "@/store";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useChatMessages = () => {
-  const { activeChat, setMessages, messages } = useChatStore();
-  useQuery({
+  const { activeChat } = useChatStore();
+  const queryClient = useQueryClient();
+  const { data: messages } = useQuery({
     queryKey: [`chat:${activeChat.id}`],
-    queryFn: async () => {
-      const result = await getChatMessages(activeChat.id);
-      setMessages(result.data);
-      return result.data;
-    },
+    queryFn: async () => (await getChatMessages(activeChat.id)).data,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    staleTime: 5 * 60 * 1000,
   });
-
-  return messages;
+  const addMessageToChat = (message: Message) => {
+    queryClient.setQueryData([`chat:${message.chatId}`], (oldData: Message[]) =>
+      oldData ? [...oldData, message] : []
+    );
+  };
+  return { messages, addMessageToChat };
 };

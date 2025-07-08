@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import type { Message } from "./services/chat-service";
 interface WebSocketStore {
   socket: WebSocket | null;
   setSocket: (s: WebSocket) => void;
@@ -15,29 +14,13 @@ export interface ActiveChat {
   name: string;
   id: string;
 }
-export interface ChatItem {
-  id: string;
-  name: string;
-  last_message: string;
-  updatedAt: string;
-  unreadCount: number;
-}
 
 interface ChatStore {
   activeChat: ActiveChat;
-  messages: Message[];
-  chatlist: ChatItem[];
-  setChatList: (chats: ChatItem[]) => void;
-  setMessages: (messages: Message[]) => void;
   setActiveChat: (chat: ActiveChat) => void;
 }
-
 export const useChatStore = create<ChatStore>((set) => ({
   activeChat: {} as ActiveChat,
-  messages: [],
-  chatlist: [],
-  setChatList: (chatlist) => set((state) => ({ ...state, chatlist })),
-  setMessages: (messages) => set((state) => ({ ...state, messages })),
   setActiveChat: (chat: ActiveChat) => set({ activeChat: chat }),
 }));
 

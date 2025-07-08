@@ -1,13 +1,14 @@
 import { apiClient } from "./apiClient";
 import { type Response } from "./auth-service";
 interface ChatListResponse extends Response {
-  data: {
-    id: string;
-    name: string;
-    last_message: string;
-    updatedAt: string;
-    unreadCount: number;
-  }[];
+  data: ChatListItem[];
+}
+export interface ChatListItem {
+  id: string;
+  name: string;
+  last_message: string;
+  updatedAt: string;
+  unreadCount: number;
 }
 const MessageStatus = {
   PENDING: "PENDING",
