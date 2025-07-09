@@ -30,5 +30,19 @@ export const useChatList = () => {
         : []
     );
   };
-  return { chatlist, isLoading, addMessageToChatList };
+  const removeUnreadCount = (chatId: string) => {
+    queryClient.setQueryData(["chat-list"], (oldData: ChatListItem[]) =>
+      oldData
+        ? oldData.map((chat) =>
+            chat.id === chatId
+              ? {
+                  ...chat,
+                  unreadCount: 0,
+                }
+              : chat
+          )
+        : []
+    );
+  };
+  return { chatlist, isLoading, addMessageToChatList, removeUnreadCount };
 };

@@ -37,7 +37,13 @@ const ChatList = ({ setActiveChat }: Props) => {
               </div>
 
               <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-600 truncate pr-2">
+                <p
+                  className={`text-sm   truncate pr-2 ${
+                    chat.unreadCount > 0
+                      ? "font-semibold text-gray-700"
+                      : "text-gray-500"
+                  }`}
+                >
                   {chat.last_message}
                 </p>
                 {chat.unreadCount > 0 && (

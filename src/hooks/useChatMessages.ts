@@ -13,9 +13,12 @@ export const useChatMessages = () => {
     staleTime: 5 * 60 * 1000,
   });
   const addMessageToChat = (message: Message) => {
-    queryClient.setQueryData([`chat:${message.chatId}`], (oldData: Message[]) =>
-      oldData ? [...oldData, message] : []
-    );
+    const oldMessages = queryClient.getQueryData<Message[]>([
+      `chat:${message.chatId}`,
+    ]);
+    if (!oldMessages) return;
+    const newMessages = [...oldMessages, message];
+    queryClient.setQueryData([`chat:${message.chatId}`], newMessages);
   };
   return { messages, addMessageToChat };
 };

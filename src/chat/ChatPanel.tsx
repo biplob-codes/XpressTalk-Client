@@ -18,7 +18,7 @@ interface Props {
 const ChatPanel = ({ chatId, onBack }: Props) => {
   const user = useQueryClient().getQueryData<User>(["user"]);
   const { messages, addMessageToChat } = useChatMessages();
-  const { addMessageToChatList } = useChatList();
+  const { addMessageToChatList, removeUnreadCount } = useChatList();
   const handleNewMessage = (message: string) => {
     const newMessage = {
       id: `${messages?.length! + 1}`,
@@ -35,8 +35,9 @@ const ChatPanel = ({ chatId, onBack }: Props) => {
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    removeUnreadCount(chatId);
+    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
+  }, [messages, chatId]);
 
   return (
     <div className="flex-1 flex flex-col h-full bg-white lg:bg-transparent lg:mx-auto   ">
