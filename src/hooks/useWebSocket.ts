@@ -1,5 +1,5 @@
 import type { Message } from "@/services/chat-service";
-import { useWsStore } from "@/store";
+import { useChatStore, useWsStore } from "@/store";
 import { useEffect } from "react";
 import { useChatList } from "./useChatList";
 import { useChatMessages } from "./useChatMessages";
@@ -9,6 +9,7 @@ export const useWebSocket = () => {
   const { setSocket, socket, removeSocket } = useWsStore();
   const { addMessageToChatList } = useChatList();
   const { addMessageToChat } = useChatMessages();
+
   const initializeWsConnection = (userId?: string) => {
     useEffect(() => {
       if (!userId) return;
@@ -21,12 +22,11 @@ export const useWebSocket = () => {
         alert("Cannot establish web socket connection");
       };
       ws.onmessage = (e) => {
-        console.log("Called:", e.data);
-
         const message = JSON.parse(e.data);
         if (message.type === "RCV_MSG") {
           addMessageToChatList(message.payload);
           addMessageToChat(message.payload);
+          sendMessageAck(message.payload, ws);
         }
       };
       return () => {
@@ -56,6 +56,21 @@ export const useWebSocket = () => {
     } else {
       console.log("WebSocket not ready. State:", socket);
     }
+  };
+  const sendMessageAck = (message: Message, ws: WebSocket) => {
+    const activeChat = useChatStore.getState().activeChat;
+    console.log("msgID:", message.chatId);
+    console.log("activeID", activeChat.id);
+    const ackObj = {
+      type: "ACK_MSG",
+      payload: {
+        chatId: message.chatId,
+        messageId: message.id,
+        status: activeChat.id === message.chatId ? "READ" : "DELIVERED",
+      },
+    };
+    const wsPayload = JSON.stringify(ackObj);
+    ws.send(wsPayload);
   };
   return { initializeWsConnection, sendWsMessage };
 };
