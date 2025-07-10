@@ -60,3 +60,4 @@ export const formatChatTime = (timestamp: string): string => {
     year: "numeric",
   });
 };
+export const formatNewMessage = () => {};

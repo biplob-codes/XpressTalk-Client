@@ -1,36 +1,62 @@
+import type { Message } from "@/services/chat-service";
+import { useWsStore } from "@/store";
+import { useEffect } from "react";
 import { useChatList } from "./useChatList";
 import { useChatMessages } from "./useChatMessages";
-import { useEffect, useRef } from "react";
 
-export const useWebSocket = (userId?: string) => {
+export const useWebSocket = () => {
   const token = localStorage.getItem("xpressTalkAccessToken");
-
-  const wsRef = useRef<WebSocket | null>(null);
+  const { setSocket, socket, removeSocket } = useWsStore();
   const { addMessageToChatList } = useChatList();
   const { addMessageToChat } = useChatMessages();
-  useEffect(() => {
-    if (!userId) return;
-    const ws = new WebSocket(`ws://localhost:5000?token=${token}`);
-    ws.onopen = () => {
-      console.log("Connected..........");
+  const initializeWsConnection = (userId?: string) => {
+    useEffect(() => {
+      if (!userId) return;
+      const ws = new WebSocket(`ws://localhost:5000?token=${token}`);
+      ws.onopen = () => {
+        console.log("Connected..........");
+        setSocket(ws);
+      };
+      ws.onerror = () => {
+        alert("Cannot establish web socket connection");
+      };
+      ws.onmessage = (e) => {
+        console.log("Called:", e.data);
 
-      wsRef.current = ws;
+        const message = JSON.parse(e.data);
+        if (message.type === "RCV_MSG") {
+          addMessageToChatList(message.payload);
+          addMessageToChat(message.payload);
+        }
+      };
+      return () => {
+        if (ws) {
+          ws.close();
+          removeSocket();
+        }
+      };
+    }, [userId]);
+  };
+  const sendWsMessage = (message: Message) => {
+    const newMessage = {
+      type: "SEND_MSG",
+      payload: {
+        chatId: message.chatId,
+        content: message.content,
+      },
+      metadata: {
+        tempId: message.id,
+      },
     };
-    ws.onerror = () => {
-      alert("Cannot establish web socket connection");
-    };
-    ws.onmessage = (e) => {
-      const message = JSON.parse(e.data);
-      if (message.type === "NEW_MESSAGE") {
-        addMessageToChatList(message.data);
-        addMessageToChat(message.data);
-      }
-    };
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-        wsRef.current = null;
-      }
-    };
-  }, [userId]);
+    const wsPayload = JSON.stringify(newMessage);
+    if (socket?.readyState === WebSocket.OPEN) {
+      console.log("Sending message...");
+      console.log(wsPayload);
+      socket.send(wsPayload);
+    } else {
+      console.log("WebSocket not ready. State:", socket);
+    }
+  };
+  return { initializeWsConnection, sendWsMessage };
 };
+``;

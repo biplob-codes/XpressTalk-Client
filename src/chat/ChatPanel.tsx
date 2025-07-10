@@ -9,6 +9,7 @@ import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
+import { useWebSocket } from "@/hooks/useWebSocket";
 
 interface Props {
   chatId: string;
@@ -19,9 +20,10 @@ const ChatPanel = ({ chatId, onBack }: Props) => {
   const user = useQueryClient().getQueryData<User>(["user"]);
   const { messages, addMessageToChat } = useChatMessages();
   const { addMessageToChatList, removeUnreadCount } = useChatList();
+  const { sendWsMessage } = useWebSocket();
   const handleNewMessage = (message: string) => {
     const newMessage = {
-      id: `${messages?.length! + 1}`,
+      id: `${crypto.randomUUID()}`,
       content: message,
       chatId,
       senderId: user?.id!,
@@ -30,10 +32,10 @@ const ChatPanel = ({ chatId, onBack }: Props) => {
     } as Message;
     addMessageToChatList(newMessage);
     addMessageToChat(newMessage);
+    sendWsMessage(newMessage);
   };
 
   const messageEndRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     removeUnreadCount(chatId);
     messageEndRef.current?.scrollIntoView({ behavior: "auto" });

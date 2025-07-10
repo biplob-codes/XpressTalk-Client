@@ -13,7 +13,8 @@ const ProtectedRoutes = () => {
     },
   });
 
-  useWebSocket(data?.id);
+  const { initializeWsConnection } = useWebSocket();
+  initializeWsConnection(data?.id);
 
   if (isLoading) return <div>Loading.....................</div>;
   return data?.id ? <Outlet /> : <Navigate to={"/home"} replace />;
