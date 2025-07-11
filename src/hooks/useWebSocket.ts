@@ -8,7 +8,8 @@ export const useWebSocket = () => {
   const token = localStorage.getItem("xpressTalkAccessToken");
   const { setSocket, socket, removeSocket } = useWsStore();
   const { addMessageToChatList } = useChatList();
-  const { addMessageToChat } = useChatMessages();
+  const { addMessageToChat, swapOutMessage, updateMessageStatus } =
+    useChatMessages();
 
   const initializeWsConnection = (userId?: string) => {
     useEffect(() => {
@@ -27,6 +28,12 @@ export const useWebSocket = () => {
           addMessageToChatList(message.payload);
           addMessageToChat(message.payload);
           sendMessageAck(message.payload, ws);
+        }
+        if (message.type === "ACK_SEND") {
+          swapOutMessage(message);
+        }
+        if (message.type === "ACK_MSG") {
+          updateMessageStatus(message.payload);
         }
       };
       return () => {

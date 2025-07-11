@@ -2,7 +2,7 @@ import { useChatStore, useUIStore } from "@/store";
 import { MoreHorizontal, Phone, ArrowLeft } from "lucide-react";
 
 const ChatHeader = () => {
-  const activeChat = useChatStore((s) => s.activeChat);
+  const { activeChat, setActiveChat } = useChatStore();
   const { isChatOpenOnMobile, setSelectedChat, setIsChatPanelOpenOnMobile } =
     useUIStore();
 
@@ -13,6 +13,7 @@ const ChatHeader = () => {
           <ArrowLeft
             onClick={() => {
               setSelectedChat("");
+              setActiveChat({ id: "", name: "" });
               setIsChatPanelOpenOnMobile(false);
             }}
             className="text-gray-600"
